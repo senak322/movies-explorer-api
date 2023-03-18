@@ -19,7 +19,7 @@ const limiter = rateLimit({
 });
 const { errors, celebrate, Joi } = require('celebrate');
 const userRouter = require('./routes/users');
-const cardRouter = require('./routes/cards');
+const movieRouter = require('./routes/movies');
 const { login, createUser } = require('./controllers/users');
 const returnPromiseError = require('./routes/badReqest');
 const { auth } = require('./middlewares/auth');
@@ -66,8 +66,8 @@ app.post('/signup', celebrate({
   }),
 }), createUser);
 app.use(auth);
-// app.use(userRouter);
-// app.use(cardRouter);
+app.use(userRouter);
+app.use(movieRouter);
 app.use('*', returnPromiseError);
 
 app.use(errorLogger); // подключаем логгер ошибок
