@@ -24,7 +24,7 @@ const createMovie = (req, res, next) => {
 };
 
 const deleteMovie = (req, res, next) => {
-  Movie.findById(req.params.movieId)
+  Movie.findById(req.params._id)
     .then((card) => {
       if (!card) {
         throw new NotFoundError('Карточка с указанным _id не найдена');
@@ -32,7 +32,7 @@ const deleteMovie = (req, res, next) => {
       if (card.owner.toString() !== req.user._id) {
         throw new Forbidden('Невозможно удалять чужие карточки');
       } else {
-        Movie.findByIdAndRemove(req.params.movieId)
+        Movie.findByIdAndRemove(req.params._id)
           .then((movieEl) => {
             if (!movieEl) {
               throw new NotFoundError('Карточка с указанным _id не найдена');
