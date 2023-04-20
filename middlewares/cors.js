@@ -1,8 +1,8 @@
 // Массив доменов, с которых разрешены кросс-доменные запросы
 const allowedCors = [
-  'https://mesto.viznyi.front.nomoredomains.work',
-  'http://mesto.viznyi.front.nomoredomains.work',
-  'http://localhost:3000',
+  'https://movies.viznyi.nomoredomains.monster',
+  'http://movies.viznyi.nomoredomains.monster',
+  'http://localhost:3001',
 ];
 
 const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
