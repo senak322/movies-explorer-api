@@ -5,6 +5,11 @@ const User = require('../models/user');
 
 const { NotFoundError } = require('../errors/NotFoundError');
 const { NotAuthorized } = require('../errors/NotAuthorized');
+const { CreateError } = require('../errors/CreateError');
+const { BusyError } = require('../errors/BusyError');
+const {
+  incorrectData, emailBusy, notFoundUser, wrongData,
+} = require('../utils/constants');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -33,12 +38,18 @@ const updateUser = (req, res, next) => {
   )
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('Пользователь не найден');
+        throw new NotFoundError(notFoundUser);
       }
       res.status(200).send({ data: user });
     })
     .catch((err) => {
-      next(err);
+      if (err.name === 'ValidationError') {
+        return next(new CreateError(incorrectData));
+      }
+      if (err.code === 11000) {
+        return next(new BusyError(emailBusy));
+      }
+      return next(err);
     });
 };
 
@@ -60,6 +71,8 @@ const createUser = (req, res, next) => {
       .catch((err) => {
         next(err);
       });
+  }).catch((err) => {
+    next(err);
   });
 };
 
@@ -69,11 +82,11 @@ const login = (req, res, next) => {
     .select('+password')
     .then((user) => {
       if (!user) {
-        throw new NotAuthorized('Неправильные почта или пароль');
+        throw new NotAuthorized(wrongData);
       }
       return bcrypt.compare(password, user.password).then((matched) => {
         if (!matched) {
-          throw new NotAuthorized('Неправильные почта или пароль');
+          throw new NotAuthorized(wrongData);
         }
         const token = jwt.sign(
           { _id: user._id },

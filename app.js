@@ -7,27 +7,18 @@ mongoose.set('strictQuery', false);
 
 const bodyParser = require('body-parser');
 
-const rateLimit = require('express-rate-limit');
-
 const helmet = require('helmet');
 
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
-  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-});
-const { errors, celebrate, Joi } = require('celebrate');
-const userRouter = require('./routes/users');
-const movieRouter = require('./routes/movies');
+const { errors } = require('celebrate');
+const { limiter } = require('./middlewares/limiter');
+const userAndMoviesRouter = require('./routes/index');
 const { login, createUser } = require('./controllers/users');
 const returnPromiseError = require('./routes/badReqest');
 const { auth } = require('./middlewares/auth');
 const { error } = require('./middlewares/error');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { cors } = require('./middlewares/cors');
-
-const urlRegExp = /(http|https):\/\/(www\.)?([-A-Za-z0-9]{1,256}(\b.)?[A-Za-z0-9]{1,})([-A-Za-z0-9/]*)/;
+const { signInValidate, signUpValidate } = require('./middlewares/validationJoi');
 
 const app = express();
 
@@ -50,24 +41,10 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
-app.post('/signin', celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required(),
-  }),
-}), login);
-app.post('/signup', celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required(),
-    name: Joi.string().min(2).max(30),
-    about: Joi.string().min(2).max(30),
-    avatar: Joi.string().pattern(urlRegExp),
-  }),
-}), createUser);
+app.post('/signin', signInValidate, login);
+app.post('/signup', signUpValidate, createUser);
 app.use(auth);
-app.use(userRouter);
-app.use(movieRouter);
+app.use(userAndMoviesRouter);
 app.use('*', returnPromiseError);
 
 app.use(errorLogger); // подключаем логгер ошибок
