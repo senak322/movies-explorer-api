@@ -4,8 +4,7 @@ const { urlRegExp } = require('../utils/constants');
 const patchUserValidate = celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30).required(),
-    email: Joi.string().email().min(2).max(30)
-      .required(),
+    email: Joi.string().email().required(),
   }),
 });
 

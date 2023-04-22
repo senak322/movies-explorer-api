@@ -17,7 +17,7 @@ const getMe = (req, res, next) => {
   User.findById(req.user)
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('Пользователь не найден');
+        throw new NotFoundError(notFoundUser);
       }
       return res.status(200).send({ data: user });
     })
@@ -69,7 +69,10 @@ const createUser = (req, res, next) => {
         });
       })
       .catch((err) => {
-        next(err);
+        if (err.code === 11000) {
+          return next(new BusyError(emailBusy));
+        }
+        return next(err);
       });
   }).catch((err) => {
     next(err);

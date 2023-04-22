@@ -6,7 +6,18 @@ const notFoundUser = 'Пользователь не найден';
 const wrongData = 'Неправильные почта или пароль';
 const notYour = 'Невозможно удалять чужие карточки';
 const needAuth = 'Необходима авторизация';
+const serverCrash = 'Сервер сейчас упадёт';
+const notFoundError = 'Указанный адрес не найден';
 
 module.exports = {
-  urlRegExp, incorrectData, emailBusy, castError, notFoundUser, wrongData, notYour, needAuth,
+  urlRegExp,
+  incorrectData,
+  emailBusy,
+  castError,
+  notFoundUser,
+  wrongData,
+  notYour,
+  needAuth,
+  serverCrash,
+  notFoundError,
 };
