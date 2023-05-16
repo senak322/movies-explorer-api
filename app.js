@@ -20,22 +20,22 @@ const app = express();
 
 const { PORT = 3001 } = process.env;
 
-const connectDatabase = async () => {
-  try {
-    // mongoose.set('bufferCommands', false);
+// const connectDatabase = async () => {
+//   try {
+//     // mongoose.set('bufferCommands', false);
 
-    await mongoose.connect(dbAddress);
+//     await mongoose.connect(dbAddress);
 
-    console.log('connected to database');
-  } catch (err) {
-    console.log(err);
-    process.exit(1);
-  }
-};
+//     console.log('connected to database');
+//   } catch (err) {
+//     console.log(err);
+//     process.exit(1);
+//   }
+// };
 
-connectDatabase();
-// mongoose.connect(dbAddress);
-// mongoose.set('bufferCommands', false);
+// connectDatabase();
+mongoose.connect(dbAddress);
+mongoose.set('bufferCommands', false);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
