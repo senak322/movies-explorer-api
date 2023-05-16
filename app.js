@@ -20,8 +20,13 @@ const app = express();
 
 const { PORT = 3001 } = process.env;
 
-mongoose.set('bufferCommands', false);
-mongoose.connect(dbAddress);
+mongoose.connect(dbAddress).then((res) => {
+  if (res) {
+    mongoose.set('bufferCommands', false);
+  }
+  // mongoose.set('bufferCommands', false);
+});
+// mongoose.set('bufferCommands', false);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
