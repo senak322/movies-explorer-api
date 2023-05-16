@@ -20,12 +20,7 @@ const app = express();
 
 const { PORT = 3001 } = process.env;
 
-mongoose.connect(dbAddress).then((res) => {
-  if (res) {
-    mongoose.set('bufferCommands', false);
-  }
-  // mongoose.set('bufferCommands', false);
-});
+mongoose.connect(dbAddress);
 // mongoose.set('bufferCommands', false);
 
 app.use(bodyParser.json());
