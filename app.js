@@ -22,7 +22,7 @@ const { PORT = 3001 } = process.env;
 
 const connectDatabase = async () => {
   try {
-    mongoose.set('bufferCommands', false);
+    // mongoose.set('bufferCommands', false);
 
     await mongoose.connect(dbAddress);
 
