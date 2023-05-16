@@ -22,10 +22,10 @@ const { PORT = 3001 } = process.env;
 
 const connectDatabase = async () => {
   try {
-    mongoose.set('bufferCommands', false);
+    // mongoose.set('bufferCommands', false);
     // mongoose.set('useNewUrlParser', true);
     await mongoose.connect(dbAddress);
-
+    mongoose.set('bufferCommands', false);
     console.log('connected to database');
   } catch (err) {
     console.log(err);
