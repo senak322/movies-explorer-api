@@ -20,7 +20,21 @@ const app = express();
 
 const { PORT = 3001 } = process.env;
 
-mongoose.connect(dbAddress);
+const connectDatabase = async () => {
+  try {
+    mongoose.set('bufferCommands', false);
+
+    await mongoose.connect(dbAddress);
+
+    console.log('connected to database');
+  } catch (err) {
+    console.log(err);
+    process.exit(1);
+  }
+};
+
+connectDatabase();
+// mongoose.connect(dbAddress);
 // mongoose.set('bufferCommands', false);
 
 app.use(bodyParser.json());
