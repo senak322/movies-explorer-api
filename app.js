@@ -37,7 +37,9 @@ const { PORT = 3001 } = process.env;
 mongoose.connect(dbAddress).then(() => {
   console.log('connected to database');
   mongoose.set('bufferCommands', false);
+  console.log(mongoose.connection.readyState);
 });
+
 // mongoose.set('bufferCommands', false);
 
 app.use(bodyParser.json());
