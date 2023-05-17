@@ -20,6 +20,10 @@ const app = express();
 
 const { PORT = 3001 } = process.env;
 
+// mongoose.connect(dbAddress, { useNewUrlParser: true }).then(() => {
+//   console.log(mongoose.connection.readyState);
+// });
+
 // const connectDatabase = async () => {
 //   try {
 //     // mongoose.set('bufferCommands', false);
@@ -34,11 +38,16 @@ const { PORT = 3001 } = process.env;
 // };
 
 // connectDatabase();
-mongoose.connect(dbAddress).then(() => {
-  console.log('connected to database');
-  mongoose.set('bufferCommands', false);
-  console.log(mongoose.connection.readyState);
-});
+mongoose
+  .connect(dbAddress)
+  .then(() => {
+    console.log('connected to database');
+    // mongoose.set('bufferCommands', false);
+    console.log(mongoose.connection.readyState);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 // mongoose.set('bufferCommands', false);
 
