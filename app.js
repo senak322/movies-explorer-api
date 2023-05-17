@@ -38,18 +38,11 @@ const { PORT = 3001 } = process.env;
 // };
 
 // connectDatabase();
-mongoose
-  .connect(dbAddress)
-  .then(() => {
-    console.log('connected to database');
-    // mongoose.set('bufferCommands', false);
-    console.log(mongoose.connection.readyState);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-
-// mongoose.set('bufferCommands', false);
+mongoose.connect(dbAddress).then(() => {
+  console.log('connected to database');
+  mongoose.set('bufferCommands', false);
+  console.log(mongoose.connection.readyState);
+});
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
